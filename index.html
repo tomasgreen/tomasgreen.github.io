@@ -35,6 +35,7 @@
 		</section>
 	</div>
 	<script src="js/jquery-2.1.1.min.js"></script>
+	<script src="js/jquery.finger.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$.fn.centerize = function () {
@@ -71,16 +72,34 @@
 				},1500);
 
 			}
-
-			resetSize();
 			$('section').each(function(i){
-				if(i != currentPage) $(this).css('display','none');
+				if(i == currentPage) $(this).css('display','block');
 			});
+			resetSize();
 			$(window).resize(function(){
 				resetSize();
 			});
-			$('section').bind('touchmove mousewheel DOMMouseScroll', function(e){
-				if(e.originalEvent.wheelDelta < 0 || e.originalEvent.detail > 0) {
+			var lastY;
+			$(document).bind('touchmove', function (e){
+				var currentY = e.originalEvent.touches[0].clientY;
+				if(currentY > lastY){
+					changePage('down');
+				}else{
+					changePage('up');
+				}
+				lastY = currentY;
+				return false;
+			});
+			$(document).bind('DOMMouseScroll', function(e){
+				if(e.originalEvent.detail > 0) {
+					changePage('down');
+				}else {
+					changePage('up');
+				}
+				return false;
+			});
+			$(document).bind('mousewheel', function(e){
+				if(e.originalEvent.wheelDelta < 0) {
 					changePage('down');
 				}else {
 					changePage('up');

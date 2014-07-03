@@ -48,6 +48,7 @@ article blockquote:before {
 	content: '-';
 }
 section {
+	display: none;
 	box-sizing: border-box;
 	position: absolute;
 	top: 0;
