@@ -80,16 +80,21 @@
 				resetSize();
 			});
 			var lastY;
-			$(document).bind('touchmove', function (e){
-				var currentY = e.originalEvent.touches[0].clientY;
-				if(currentY > lastY){
-					changePage('down');
-				}else{
-					changePage('up');
-				}
-				lastY = currentY;
+			var ts;
+			$(document).bind('touchstart', function (e){
+				ts = e.originalEvent.touches[0].clientY;
 				return false;
 			});
+			$(document).bind('touchend', function (e){
+				var te = e.originalEvent.changedTouches[0].clientY;
+				if(ts > te+5){
+					changePage('down');
+				}else if(ts < te-5){
+					changePage('up');
+				}
+				return false;
+			});
+
 			$(document).bind('DOMMouseScroll', function(e){
 				if(e.originalEvent.detail > 0) {
 					changePage('down');
