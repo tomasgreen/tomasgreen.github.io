@@ -1,4 +1,7 @@
 $(document).ready(function () {
+	if (('ontouchstart' in document.documentElement)) {
+		document.documentElement.className += ' touch';
+	}
 	var numerOfPages = $('section').length;
 	var currentPage = parseInt(window.location.hash.substr(1)) || numerOfPages;
 	if (currentPage > numerOfPages) {
