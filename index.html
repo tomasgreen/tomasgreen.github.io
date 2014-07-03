@@ -8,24 +8,21 @@
 	<meta name=description content="Gamer, programmer...">
 	<meta name=viewport content="width=device-width, initial-scale=1">
 	<link rel='stylesheet' href='http://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css' type='text/css' media='screen' charset='utf-8'>
-	<link rel='stylesheet' href="http://cdnjs.cloudflare.com/ajax/libs/animate.css/3.0.0/animate.min.css" type='text/css' media='screen' charset='utf-8'>
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,300,800,700,600,400' rel='stylesheet' type='text/css'>
 	<link rel='stylesheet' href="http://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.0/animate.min.css" type='text/css' media='screen' charset='utf-8'>
-	<link rel='stylesheet' href="css/style.css" type='text/css' media='screen' charset='utf-8'>
+	<link rel='stylesheet' href="css/style.css?v=1.0" type='text/css' media='screen' charset='utf-8'>
 </head>
 <body>
 	<div class="main">
-		<section style="background-color: #55ACEE" class="animated" id="0">
+		<section data-bg="img/sublime-text_blur.jpg" class="animated">
 			<article>
-				<p>
-					Some use twitter, I use <a href="http://jquery.com">jQuery</a>
-				</p>
+				<p>Some use twitter, I use <a href="http://jquery.com">jQuery</a></p>
 				<blockquote>
 					Tomas Green 2014-07-03 16:58
 				</blockquote>
 			</article>
 		</section>
-		<section style="background-image: url(img/dead-space-2-art_blur.jpg);" class="animated" id="1">
+		<section data-bg="img/dead-space-2-art_blur.jpg" class="animated">
 			<article>
 				<p>Playing <a href="http://sv.wikipedia.org/wiki/Dead_Space_2">Dead Space 2</a> and waiting for <a href="http://tomasgreen.github.io/countdown.html?datetime=2014-07-04%2015:00:00&done=Nu%20jävlar%20är%20det%20semester&title=Semester%20om...&bg=http://xdesigns.net/wp-content/uploads/2013/07/2-grass-wallpaper.jpg">semester</a>.</p>
 				<blockquote>
@@ -35,83 +32,6 @@
 		</section>
 	</div>
 	<script src="js/jquery-2.1.1.min.js"></script>
-	<script src="js/jquery.finger.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function () {
-			$.fn.centerize = function () {
-				$(this).each(function(){
-					var $obj = $(this);
-					$obj.css('margin-top', parseInt(($obj.parent().outerHeight()-$obj.outerHeight()) / 2) + 'px');
-				});
-			};
-			var resetSize = function(){
-				$('section').width($(window).innerWidth());
-				$('section').height($(window).innerHeight());
-				$('article').centerize();
-			};
-			var currentPage = parseInt(window.location.hash.substr(1)) || 0;
-			var maxPage = $('section').length - 1;
-			if(currentPage > maxPage) {
-				currentPage = maxPage;
-				window.location.hash = '#'+currentPage;
-			}
-			var busy = false;
-			var changePage = function(direction) {
-				var nextPage = 0;
-				if(direction == 'up') nextPage = currentPage -1;
-				else if(direction == 'down') nextPage = currentPage + 1;
-				if(nextPage < 0 || nextPage > maxPage || busy) return;
-				busy = true;
-				$('#'+currentPage).removeClass('fadeOut fadeIn').addClass('fadeOut');
-				currentPage = nextPage;
-				window.location.hash = '#'+currentPage;
-				$('#'+currentPage).removeClass('fadeOut fadeIn').css('display','block').addClass('fadeIn');
-				resetSize();
-				setTimeout(function(){
-					busy = false;
-				},1500);
-
-			}
-			$('section').each(function(i){
-				if(i == currentPage) $(this).css('display','block');
-			});
-			resetSize();
-			$(window).resize(function(){
-				resetSize();
-			});
-			var lastY;
-			var ts;
-			$(document).bind('touchstart', function (e){
-				ts = e.originalEvent.touches[0].clientY;
-				return false;
-			});
-			$(document).bind('touchend', function (e){
-				var te = e.originalEvent.changedTouches[0].clientY;
-				if(ts > te+5){
-					changePage('down');
-				}else if(ts < te-5){
-					changePage('up');
-				}
-				return false;
-			});
-
-			$(document).bind('DOMMouseScroll', function(e){
-				if(e.originalEvent.detail > 0) {
-					changePage('down');
-				}else {
-					changePage('up');
-				}
-				return false;
-			});
-			$(document).bind('mousewheel', function(e){
-				if(e.originalEvent.wheelDelta < 0) {
-					changePage('down');
-				}else {
-					changePage('up');
-				}
-				return false;
-			});
-		});
-</script>
+	<script src="js/blog.js"></script>
 </body>
 </html>

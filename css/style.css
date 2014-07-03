@@ -30,9 +30,9 @@ article {
 	padding: 0px 40px;
 	font-size: 70px;
 }
-article p {
-	margin: 0px;
-	padding: 0px;
+article p:last-of-type {
+	margin-bottom: 0px;
+	padding-bottom: 0px;
 }
 article blockquote  {
 	margin-left: 0px;
