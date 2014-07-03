@@ -21,6 +21,7 @@ article a:hover {
 	opacity: 1;
 }
 article {
+	position: relative;
 	box-sizing: border-box;
 	font-weight: 300;
 	color: #fff;
@@ -30,7 +31,8 @@ article {
 	font-size: 70px;
 }
 article p {
-	margin-bottom: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 article blockquote  {
 	margin-left: 0px;

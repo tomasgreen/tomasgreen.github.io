@@ -34,10 +34,20 @@
 			</article>
 		</section>
 	</div>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="js/jquery-2.1.1.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
-
+			$.fn.centerize = function () {
+				$(this).each(function(){
+					var $obj = $(this);
+					$obj.css('margin-top', parseInt(($obj.parent().outerHeight()-$obj.outerHeight()) / 2) + 'px');
+				});
+			};
+			var resetSize = function(){
+				$('section').width($(window).innerWidth());
+				$('section').height($(window).innerHeight());
+				$('article').centerize();
+			};
 			var currentPage = parseInt(window.location.hash.substr(1)) || 0;
 			var maxPage = $('section').length - 1;
 			if(currentPage > maxPage) {
@@ -55,36 +65,22 @@
 				currentPage = nextPage;
 				window.location.hash = '#'+currentPage;
 				$('#'+currentPage).removeClass('fadeOut fadeIn').css('display','block').addClass('fadeIn');
+				resetSize();
 				setTimeout(function(){
 					busy = false;
 				},1500);
 
 			}
-			$.fn.centerize = function () {
-				var $obj = $(this);
-				$obj.css('margin-top', (($obj.parent().height()-$obj.outerHeight()) / 2) + 'px');
-			};
-			$('section').width($(window).innerWidth());
-			$('section').height($(window).innerHeight());
-			$('article').centerize();
+
+			resetSize();
 			$('section').each(function(i){
 				if(i != currentPage) $(this).css('display','none');
 			});
 			$(window).resize(function(){
-				$('section').width($(window).innerWidth());
-				$('section').height($(window).innerHeight());
-				$('article').centerize();
+				resetSize();
 			});
-			$('body').bind('DOMMouseScroll', function(e){
-				if(e.originalEvent.detail > 0) {
-					changePage('down');
-				}else {
-					changePage('up');
-				}
-				return false;
-			});
-			$('body').bind('mousewheel', function(e){
-				if(e.originalEvent.wheelDelta < 0) {
+			$('section').bind('touchmove mousewheel DOMMouseScroll', function(e){
+				if(e.originalEvent.wheelDelta < 0 || e.originalEvent.detail > 0) {
 					changePage('down');
 				}else {
 					changePage('up');
