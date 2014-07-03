@@ -1,11 +1,34 @@
 body {
-	font-family: 'Helvetica Neue', 'Open Sans', Helvetica, Arial, sans-serif;
+	font-family: 'Helvetica Neue Light', 'Open Sans', Helvetica, Arial, sans-serif;
+	background-color: #39CCCC;
+}
+.container {
 	font-weight: 300;
-	padding-bottom: 100px;
-	padding-top: 90px;
-	background: url(../img/bg2.jpg) no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
+	color: #fff;
+	position: absolute;
+	top: 50%;
+	width: 100%;
+	text-align: center;
+	font-size: 70px;
+}
+.container p {
+	margin-bottom: 0px;
+}
+.container:after {
+	content: '- Tomas Green 2014-07-03 13:50';
+	font-style: italic;
+	font-size: 15px;
+	color: #fff;
+	text-align: center;
+}
+
+@media screen and (max-width: 790px){
+	.container {
+		font-size: 50px;
+	}
+}
+@media screen and (max-width: 400px){
+	.container {
+		font-size: 30px;
+	}
 }
