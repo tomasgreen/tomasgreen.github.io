@@ -27,6 +27,8 @@ $.fn.absoluteSize = function (width, height) {
 $(document).ready(function () {
 	if (('ontouchstart' in document.documentElement)) {
 		document.documentElement.className += ' touch';
+		$('.up').remove();
+		$('.down').remove();
 	}
 	var nextPageBusy = false;
 	var prevPageBusy = false;
@@ -63,7 +65,6 @@ $(document).ready(function () {
 		prevPageBusy = true;
 		currentPage = nextPage;
 		window.location.hash = '#' + currentPage;
-		$nextPage.lazyLoad();
 		if (direction == 'down') {
 			$prevPage.addClass('current moveToTop');
 			$nextPage.addClass('current moveFromBottom');
@@ -73,16 +74,22 @@ $(document).ready(function () {
 		}
 		$nextPage.on('webkitAnimationEnd', function (event) {
 			nextPageBusy = false;
+			finished();
 			$nextPage.removeClass('moveToTop moveFromBottom moveToBottom moveFromTop');
 			$nextPage.addClass('current');
 			$nextPage.off('webkitAnimationEnd');
 		});
 		$prevPage.on('webkitAnimationEnd', function (event) {
 			prevPageBusy = false;
+			finished();
 			$prevPage.removeClass('moveToTop moveFromBottom moveToBottom moveFromTop');
 			$prevPage.removeClass('current');
 			$prevPage.off('webkitAnimationEnd');
 		});
+		var finished = function () {
+			if (prevPageBusy || nextPageBusy) return;
+			$nextPage.lazyLoad();
+		};
 		resetSize();
 		updateChevrons();
 	};

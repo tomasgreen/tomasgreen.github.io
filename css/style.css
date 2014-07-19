@@ -125,6 +125,11 @@ article blockquote:before {
 	z-index: 999;
 }
 [data-bg] {
+	-webkit-transform: translateX(0px) translateY(0px) translateZ(0px);
+	-moz-transform: translateX(0px) translateY(0px) translateZ(0px);
+	-ms-transform: translateX(0px) translateY(0px) translateZ(0px);
+	-o-transform: translateX(0px) translateY(0px) translateZ(0px);
+	transform: translateX(0px) translateY(0px) translateZ(0px);
 	-webkit-transition: background linear 0.3s;
 	-moz-transition: background linear 0.3s;
 	-o-transition: background linear 0.3s;
