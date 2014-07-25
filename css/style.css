@@ -100,6 +100,12 @@ article {
 	padding: 0px 40px;
 	font-size: 70px;
 }
+.medium {
+	font-size: 50px;
+}
+.long {
+	font-size: 30px;
+}
 article p:last-of-type {
 	margin-bottom: 0px;
 	padding-bottom: 0px;
@@ -166,10 +172,22 @@ section {
 	article {
 		font-size: 50px;
 	}
+	.medium {
+		font-size: 30px;
+	}
+	.long {
+		font-size: 20px;
+	}
 }
 @media screen and (max-width:600px) {
 	article {
 		font-size: 30px;
+	}
+	.medium {
+		font-size: 20px;
+	}
+	.long {
+		font-size: 15px;
 	}
 }
 
