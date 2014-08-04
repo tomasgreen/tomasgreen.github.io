@@ -72,19 +72,19 @@ $(document).ready(function () {
 			$prevPage.addClass('current moveToBottom');
 			$nextPage.addClass('current moveFromTop');
 		}
-		$nextPage.on('webkitAnimationEnd', function (event) {
+		$nextPage.on('webkitAnimationEnd animationstart', function (event) {
 			nextPageBusy = false;
 			finished();
 			$nextPage.removeClass('moveToTop moveFromBottom moveToBottom moveFromTop');
 			$nextPage.addClass('current');
-			$nextPage.off('webkitAnimationEnd');
+			$nextPage.off('webkitAnimationEnd animationstart');
 		});
-		$prevPage.on('webkitAnimationEnd', function (event) {
+		$prevPage.on('webkitAnimationEnd animationend', function (event) {
 			prevPageBusy = false;
 			finished();
 			$prevPage.removeClass('moveToTop moveFromBottom moveToBottom moveFromTop');
 			$prevPage.removeClass('current');
-			$prevPage.off('webkitAnimationEnd');
+			$prevPage.off('webkitAnimationEnd animationend');
 		});
 		var finished = function () {
 			if (prevPageBusy || nextPageBusy) return;
