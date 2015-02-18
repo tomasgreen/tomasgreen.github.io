@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-title" content="Current week">
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="author" content="Tomas Green" />
+	<title>Current week</title>
+	<style>
+		body {
+			background-color: #105B63;
+			padding: 0;
+			margin: 0;
+			height: 100vh;
+			width: 100%;
+			display: -webkit-flex;
+			-webkit-align-items: center;
+			-webkit-justify-content: center;
+		}
+		body,.week, .date {
+			color: #FFFAD5;
+			font-family: 'Helvetica Neue','Open Sans',sans-serif;
+			font-weight: 300;
+		}
+		.content {
+			-webkit-flex: none;
+			text-align: center;
+		}
+		.content .week {
+			overflow: hidden;
+			line-height: 1;
+			font-size: 300px;
+			-webkit-flex: 1;
+		}
+		.animate {
+			-webkit-animation-name: bounceIn;
+			-webkit-animation-duration: 0.25s;
+			-webkit-animation-fill-mode: both;
+		}
+		.content .date {
+			font-size: 20px;
+			border: none;
+			/*border: 1px solid #FFFAD5;*/
+			background-color: rgba(255,255,255,0.1);
+			text-align: center;
+			outline: none;
+			--webkit-appearance: none;
+		}
+		@-webkit-keyframes bounceIn {
+			0%, 50%, 100% {
+				-webkit-transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+				transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+			}
+
+			0% {
+				opacity: 0;
+				-webkit-transform: scale3d(.3, .3, .3);
+				transform: scale3d(.3, .3, .3);
+			}
+
+			50% {
+				opacity: 1;
+				-webkit-transform: scale3d(1.1, 1.1, 1.1);
+				transform: scale3d(1.1, 1.1, 1.1);
+			}
+
+			100% {
+				opacity: 1;
+				-webkit-transform: scale3d(1, 1, 1);
+				transform: scale3d(1, 1, 1);
+			}
+		}
+		@media (max-width: 768px){
+			.content .week{
+				font-size: 200px;
+			}
+		}
+	</style>
+</head>
+<body>
+	<div class="content">
+		<div class="week"></div>
+		<input class="date" type="text" placeholder="YYYY-MM-DD" maxlength="10" />
+	</div>
+	<script>
+		var _animationEndEvents = 'webkitAnimationEnd mozAnimationEnd msAnimationEnd oAnimationEnd animationend',
+		_animationStartEvents = 'webkitAnimationStart mozAnimationStart msAnimationStart oAnimationStart animationstart';
+		function _each(o, func) {
+			if (!o || (o.length === 0 && o != window)) return;
+			if (!o.length) func(o);
+			else Array.prototype.forEach.call(o, function (el, i) {
+				func(el);
+			});
+		}
+
+		function _one(el, events, func, useCapture) {
+			_on(el, events, function (ev) {
+				func(ev);
+				_off(el, events, func);
+			}, useCapture);
+		}
+
+		function _on(els, events, func, useCapture) {
+			_each(els, function (el) {
+				var ev = events.split(' ');
+				for (var e in ev) el.addEventListener(ev[e], func, useCapture);
+			});
+		}
+
+		function _off(els, events, func) {
+			_each(els, function (el) {
+				var ev = events.split(' ');
+				for (var e in ev) el.removeEventListener(ev[e], func);
+			});
+		}
+
+		function _addClass(els, cls) {
+			_each(els, function (el) {
+				if (el.classList) {
+					var arr = cls.split(' ');
+					for (var i in arr) el.classList.add(arr[i]);
+				} else el.className += ' ' + cls;
+			});
+		}
+
+		function _removeClass(els, cls) {
+			_each(els, function (el) {
+				if (el.classList) {
+					var arr = cls.split(' ');
+					for (var i in arr) el.classList.remove(arr[i]);
+				} else el.className = el.className.replace(new RegExp('(^|\\b)' + cls.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+			});
+		}
+
+		function _animateCSS(el, cls, start, end) {
+			if (start) _one(el, _animationStartEvents, start);
+			_one(el, _animationEndEvents, function (ev) {
+				_removeClass(el, cls);
+				if (end) end(ev);
+			});
+			_addClass(el, cls);
+		}
+		Date.prototype.getWeek = function () {
+			var d = new Date(this);
+			d.setHours(0, 0, 0);
+			d.setDate(d.getDate() + 4 - (d.getDay() || 7));
+			var yearStart = new Date(d.getFullYear(), 0, 1);
+			return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+		};
+		Date.prototype.format = function() {
+			return this.getFullYear() + "-" + (this.getMonth() < 9 ? "0" + (this.getMonth()+1) : (this.getMonth()+1)) + "-" + (this.getDate() < 9 ? "0" + this.getDate() : this.getDate());
+		};
+		(function () {
+			'use strict';
+			document.addEventListener('DOMContentLoaded', function () {
+				var date = new Date();
+				var weekEl = document.querySelector('.week');
+				_animateCSS(weekEl,'animate');
+				weekEl.textContent = date.getWeek();
+				var el = document.querySelector('.date');
+				el.value = date.format();
+				el.addEventListener('change', function(ev){
+					date = new Date(el.value);
+					weekEl.textContent = isNaN(date) ? '?' : date.getWeek();
+					_animateCSS(weekEl,'animate');
+				}, false);
+			});
+		}).call(this);
+	</script>
+</body>
+</html>
