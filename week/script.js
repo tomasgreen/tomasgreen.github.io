@@ -116,6 +116,8 @@ http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-
 		setSpan();
 
 		_animateCSS(weekEl, 'animate');
+		_animateCSS(yearEl, 'animate');
+		_animateCSS(dateEl, 'animate');
 
 		_on(dateEl, 'keyup', function (ev) {
 			if (dateEl.value.length < 10 || dateEl.lastValue == dateEl.value) return;
