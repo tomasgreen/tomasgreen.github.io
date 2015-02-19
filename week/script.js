@@ -70,7 +70,6 @@ Date.prototype.format = function () {
 	string += (this.getDate() < 9 ? "0" + this.getDate() : this.getDate());
 	return string;
 };
-
 Date.prototype.setWeek = function (w, y) {
 	if (y === undefined) y = this.getFullYear();
 	var simple = new Date(y, 0, 1 + (w - 1) * 7);
@@ -95,35 +94,74 @@ http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-
 		var date = new Date(),
 			weekEl = document.querySelector('.week'),
 			dateEl = document.querySelector('.date'),
+			yearEl = document.querySelector('.year'),
 			infoEl = document.querySelector('.info');
 
 		function setSpan() {
 			if (isNaN(date)) return;
-			var starts = new Date(date);
-			starts.setWeek(date.getWeek());
-			var ends = new Date(starts);
-			ends.setDate(ends.getDate() + 6);
-			infoEl.innerHTML = "<small>" + starts.format() + " to " + ends.format() + "</small>";
-			_animateCSS(infoEl, 'animate');
-		}
+			var start = new Date(date);
+			start.setWeek(date.getWeek(), yearEl.value);
+			var end = new Date(start);
+			end.setDate(end.getDate() + 6);
+			var html = start.format() + ' → ' + end.format();
+			if (infoEl.textContent != html) {
+				infoEl.textContent = html;
+				_animateCSS(infoEl, 'animate');
+			}
 
-		weekEl.value = date.getWeek();
-		dateEl.value = date.format();
+		}
+		yearEl.value = yearEl.lastValue = date.getFullYear();
+		weekEl.value = weekEl.lastValue = date.getWeek();
+		dateEl.value = dateEl.lastValue = date.format();
 		setSpan();
+
 		_animateCSS(weekEl, 'animate');
 
-		_on(dateEl, 'change', function (ev) {
+		_on(dateEl, 'keyup', function (ev) {
+			if (dateEl.value.length < 10 || dateEl.lastValue == dateEl.value) return;
+			dateEl.lastValue = dateEl.value;
 			date = new Date(dateEl.value);
-			weekEl.value = isNaN(date) ? '?' : date.getWeek();
-			_animateCSS(weekEl, 'animate');
-			setSpan()
+			updateYear();
+			updateWeek();
+			setSpan();
+		}, false);
+		_on(weekEl, 'keyup', function (ev) {
+			if (weekEl.value > 53 || weekEl.value < 1 || weekEl.lastValue == weekEl.value) return;
+			if (isNaN(date)) date = new Date();
+			weekEl.lastValue = weekEl.value;
+			date.setWeek(parseInt(weekEl.value, 10), yearEl.value);
+			updateDate();
+			setSpan();
 		}, false);
 
-		_on(weekEl, 'change', function (ev) {
-			date.setWeek(parseInt(weekEl.value, 10));
-			dateEl.value = isNaN(date) ? '?' : date.format();
-			_animateCSS(dateEl, 'animate');
-			setSpan()
+		_on(yearEl, 'keyup', function (ev) {
+			if (yearEl.value.length < 4 || yearEl.lastValue == yearEl.value) return;
+			date.setFullYear(yearEl.value);
+			yearEl.lastValue = yearEl.value;
+			updateWeek();
+			updateDate();
+			setSpan();
 		}, false);
+
+		function updateDate() {
+			if (isNaN(date) || dateEl.lastValue == date.format()) return;
+
+			dateEl.value = dateEl.lastValue = isNaN(date) ? '?' : date.format();
+			_animateCSS(dateEl, 'animate');
+		}
+
+		function updateWeek() {
+			if (isNaN(date) || weekEl.lastValue == date.getWeek()) return;
+
+			weekEl.value = weekEl.lastValue = isNaN(date) ? '?' : date.getWeek();
+			_animateCSS(weekEl, 'animate');
+		}
+
+		function updateYear() {
+			if (isNaN(date) || yearEl.lastValue == date.getFullYear()) return;
+
+			yearEl.value = yearEl.lastValue = date.getFullYear();
+			_animateCSS(yearEl, 'animate');
+		}
 	});
 }).call(this);

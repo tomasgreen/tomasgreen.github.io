@@ -1,7 +1,23 @@
 body {
-  background-color: #105B63;
   padding: 0;
   margin: 0;
+  height: 100vh;
+  width: 100%;
+}
+body,
+input {
+  /*color: #FFFAD5;*/
+  color: #fff;
+  font-family: 'Helvetica Neue', 'Open Sans', sans-serif;
+  font-weight: 300;
+}
+input {
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+  background-color: transparent;
+}
+main {
   height: 100vh;
   width: 100%;
   display: -webkit-flex;
@@ -13,18 +29,10 @@ body {
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
-}
-body,
-input {
-  color: #FFFAD5;
-  font-family: 'Helvetica Neue', 'Open Sans', sans-serif;
-  font-weight: 300;
-}
-input {
-  border: none;
-  outline: none;
-  -webkit-appearance: none;
-  background-color: transparent;
+  background-color: #0b4046;
+  /*105B63*/
+  -webkit-animation: hue 60s infinite linear;
+  animation: hue 60s infinite linear;
 }
 .content {
   -webkit-flex: none;
@@ -42,14 +50,21 @@ input {
   font-size: 300px;
   max-width: 400px;
   text-align: center;
+  margin-bottom: 5px;
 }
 .content .date {
   font-size: 20px;
   background-color: rgba(255, 255, 255, 0.1);
   text-align: center;
 }
+.content .year {
+  font-size: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
 .content .info {
   margin-top: 10px;
+  font-size: 12px;
 }
 .animate {
   -webkit-animation-name: bounceIn;
@@ -66,9 +81,9 @@ input {
     transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
   0% {
-    opacity: 0;
-    -webkit-transform: scale3d(0.3, 0.3, 0.3);
-    transform: scale3d(0.3, 0.3, 0.3);
+    opacity: 0.5;
+    -webkit-transform: scale3d(0.8, 0.8, 0.8);
+    transform: scale3d(0.8, 0.8, 0.8);
   }
   50% {
     opacity: 1;
@@ -88,9 +103,9 @@ input {
     transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
   0% {
-    opacity: 0;
-    -webkit-transform: scale3d(0.3, 0.3, 0.3);
-    transform: scale3d(0.3, 0.3, 0.3);
+    opacity: 0.5;
+    -webkit-transform: scale3d(0.8, 0.8, 0.8);
+    transform: scale3d(0.8, 0.8, 0.8);
   }
   50% {
     opacity: 1;
@@ -103,9 +118,29 @@ input {
     transform: scale3d(1, 1, 1);
   }
 }
+@-webkit-keyframes hue {
+  from {
+    -webkit-filter: hue-rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+    filter: hue-rotate(-360deg);
+  }
+}
+@keyframes hue {
+  from {
+    -webkit-filter: hue-rotate(0deg);
+    filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+    filter: hue-rotate(-360deg);
+  }
+}
 @media (max-width: 768px) {
   .content .week {
-    font-size: 200px;
+    font-size: 100px;
     max-width: 280px;
   }
 }

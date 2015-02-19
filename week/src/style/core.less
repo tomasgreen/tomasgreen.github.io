@@ -1,15 +1,12 @@
 body {
-	background-color: #105B63;
 	padding: 0;
 	margin: 0;
 	height: 100vh;
 	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
 }
 body,input {
-	color: #FFFAD5;
+	/*color: #FFFAD5;*/
+	color: #fff;
 	font-family: 'Helvetica Neue','Open Sans',sans-serif;
 	font-weight: 300;
 }
@@ -18,6 +15,16 @@ input {
 	outline: none;
 	-webkit-appearance: none;
 	background-color: transparent;
+
+}
+main {
+	height: 100vh;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #0b4046; /*105B63*/
+	animation: hue 60s infinite linear;
 }
 .content {
 	flex: none;
@@ -32,14 +39,21 @@ input {
 		font-size: 300px;
 		max-width: 400px;
 		text-align: center;
+		margin-bottom: 5px;
 	}
 	.date {
 		font-size: 20px;
 		background-color: rgba(255,255,255,0.1);
 		text-align: center;
 	}
+	.year {
+		font-size: 20px;
+		background-color: rgba(255,255,255,0.1);
+		text-align: center;
+	}
 	.info {
 		margin-top: 10px;
+		font-size: 12px;
 	}
 }
 .animate {
@@ -53,8 +67,8 @@ input {
 	}
 
 	0% {
-		opacity: 0;
-		transform: scale3d(.3, .3, .3);
+		opacity: 0.5;
+		transform: scale3d(.8, .8, .8);
 	}
 
 	50% {
@@ -67,9 +81,18 @@ input {
 		transform: scale3d(1, 1, 1);
 	}
 }
+@keyframes hue {
+	from {
+		filter: hue-rotate(0deg);
+	}
+
+	to {
+		filter: hue-rotate(-360deg);
+	}
+}
 @media (max-width: 768px){
 	.content .week{
-		font-size: 200px;
+		font-size: 100px;
 		max-width: 280px;
 	}
 }
