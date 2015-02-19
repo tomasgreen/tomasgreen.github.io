@@ -70,7 +70,7 @@ Date.prototype.format = function () {
 	'use strict';
 	document.addEventListener('DOMContentLoaded', function () {
 		if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-			document.body.style.height = '95vh';
+			document.body.style.height = '80vh';
 		}
 		var date = new Date();
 		var weekEl = document.querySelector('.week');
