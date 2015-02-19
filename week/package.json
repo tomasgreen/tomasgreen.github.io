@@ -1,0 +1,16 @@
+{
+	"name": "week",
+	"version": "0.1.0",
+	"private": true,
+	"author": "Tomas Green",
+	"license": "MIT",
+	"dependencies": {
+		"yargs": "*",
+		"gulp": "*",
+		"gulp-postcss": "*",
+		"autoprefixer-core": "*",
+		"gulp-rename": "*",
+		"gulp-less": "*",
+		"gulp-autoprefixer": "*"
+	}
+}
