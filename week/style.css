@@ -15,11 +15,16 @@ body {
   justify-content: center;
 }
 body,
-.week,
-.date {
+input {
   color: #FFFAD5;
   font-family: 'Helvetica Neue', 'Open Sans', sans-serif;
   font-weight: 300;
+}
+input {
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+  background-color: transparent;
 }
 .content {
   -webkit-flex: none;
@@ -28,12 +33,23 @@ body,
   text-align: center;
 }
 .content .week {
+  display: block;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   overflow: hidden;
   line-height: 1;
   font-size: 300px;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
+  max-width: 400px;
+  text-align: center;
+}
+.content .date {
+  font-size: 20px;
+  background-color: rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+.content .info {
+  margin-top: 10px;
 }
 .animate {
   -webkit-animation-name: bounceIn;
@@ -42,15 +58,6 @@ body,
   animation-duration: 0.25s;
   -webkit-animation-fill-mode: both;
   animation-fill-mode: both;
-}
-.content .date {
-  font-size: 20px;
-  border: none;
-  /*border: 1px solid #FFFAD5;*/
-  background-color: rgba(255, 255, 255, 0.1);
-  text-align: center;
-  outline: none;
-  -webkit-appearance: none;
 }
 @-webkit-keyframes bounceIn {
   0%,
@@ -99,5 +106,6 @@ body,
 @media (max-width: 768px) {
   .content .week {
     font-size: 200px;
+    max-width: 280px;
   }
 }

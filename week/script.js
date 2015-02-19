@@ -61,27 +61,69 @@ Date.prototype.getWeek = function () {
 	d.setHours(0, 0, 0);
 	d.setDate(d.getDate() + 4 - (d.getDay() || 7));
 	var yearStart = new Date(d.getFullYear(), 0, 1);
-	return Math.ceil((((d - yearStart) / 86400000) + 1) / 7)
+	return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 };
+
 Date.prototype.format = function () {
-	return this.getFullYear() + "-" + (this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1)) + "-" + (this.getDate() < 9 ? "0" + this.getDate() : this.getDate());
+	var string = this.getFullYear() + "-";
+	string += (this.getMonth() < 9 ? "0" + (this.getMonth() + 1) : (this.getMonth() + 1)) + "-";
+	string += (this.getDate() < 9 ? "0" + this.getDate() : this.getDate());
+	return string;
 };
+
+Date.prototype.setWeek = function (w, y) {
+	if (y === undefined) y = this.getFullYear();
+	var simple = new Date(y, 0, 1 + (w - 1) * 7);
+	var dow = simple.getDay();
+	var ISOweekStart = simple;
+	if (dow <= 4)
+		ISOweekStart.setDate(simple.getDate() - simple.getDay() + 1);
+	else
+		ISOweekStart.setDate(simple.getDate() + 8 - simple.getDay());
+	this.setFullYear(ISOweekStart.getFullYear());
+	this.setMonth(ISOweekStart.getMonth());
+	this.setDate(ISOweekStart.getDate());
+};
+/*
+http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-number
+*/
 (function () {
 	'use strict';
 	document.addEventListener('DOMContentLoaded', function () {
-		if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-			document.body.style.height = '80vh';
+		if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) document.body.style.height = '80vh';
+
+		var date = new Date(),
+			weekEl = document.querySelector('.week'),
+			dateEl = document.querySelector('.date'),
+			infoEl = document.querySelector('.info');
+
+		function setSpan() {
+			if (isNaN(date)) return;
+			var starts = new Date(date);
+			starts.setWeek(date.getWeek());
+			var ends = new Date(starts);
+			ends.setDate(ends.getDate() + 6);
+			infoEl.innerHTML = "<small>" + starts.format() + " to " + ends.format() + "</small>";
+			_animateCSS(infoEl, 'animate');
 		}
-		var date = new Date();
-		var weekEl = document.querySelector('.week');
+
+		weekEl.value = date.getWeek();
+		dateEl.value = date.format();
+		setSpan();
 		_animateCSS(weekEl, 'animate');
-		weekEl.textContent = date.getWeek();
-		var el = document.querySelector('.date');
-		el.value = date.format();
-		_on(el, 'change', function (ev) {
-			date = new Date(el.value);
-			weekEl.textContent = isNaN(date) ? '?' : date.getWeek();
+
+		_on(dateEl, 'change', function (ev) {
+			date = new Date(dateEl.value);
+			weekEl.value = isNaN(date) ? '?' : date.getWeek();
 			_animateCSS(weekEl, 'animate');
+			setSpan()
+		}, false);
+
+		_on(weekEl, 'change', function (ev) {
+			date.setWeek(parseInt(weekEl.value, 10));
+			dateEl.value = isNaN(date) ? '?' : date.format();
+			_animateCSS(dateEl, 'animate');
+			setSpan()
 		}, false);
 	});
 }).call(this);
