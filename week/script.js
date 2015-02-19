@@ -89,9 +89,9 @@ http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-
 (function () {
 	'use strict';
 	document.addEventListener('DOMContentLoaded', function () {
-		if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-			document.querySelector('.main').style.height = '80vh';
-		}
+		/*if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
+			document.querySelector('.main').style.height = '87vh';
+		}*/
 
 		var date = new Date(),
 			weekEl = document.querySelector('.week'),

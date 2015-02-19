@@ -5,6 +5,7 @@
 	"author": "Tomas Green",
 	"license": "MIT",
 	"dependencies": {
+		"express": "*",
 		"yargs": "*",
 		"gulp": "*",
 		"gulp-postcss": "*",
