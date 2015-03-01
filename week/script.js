@@ -137,15 +137,7 @@ http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-
 			dateEl = document.querySelector('.date'),
 			yearEl = document.querySelector('.year'),
 			infoEl = document.querySelector('.info');
-		var params = _queryStringToObject(window.location.search);
-		if (params) {
-			if (params.date) {
-				date = new Date(params.date);
-			} else {
-				if (params.year) date.setFullYear(params.year);
-				if (params.week) date.setWeek(params.week);
-			}
-		}
+
 
 		_on([document.documentElement], 'keyup', function (ev) {
 			if (ev.srcElement != document.body) return;
@@ -236,9 +228,20 @@ http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-
 			yearEl.value = yearEl.lastValue = date.getFullYear();
 			_animateCSS(yearEl, 'animate');
 		}
+		var params = _queryStringToObject(window.location.search);
+		if (params) {
+			if (params.date) {
+				date = new Date(params.date);
+			} else {
+				if (params.year) date.setFullYear(params.year);
+				if (params.week) date.setWeek(params.week);
+			}
+		} else {
+			autoupdate();
 
-		resetAll();
-		autoupdate();
+		}
+		resetAll(date);
+
 
 		_on(dateEl, 'keyup', function (ev) {
 			if (dateEl.value.length < 10 || dateEl.lastValue == dateEl.value) return;
