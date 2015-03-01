@@ -12,7 +12,8 @@
 	<meta name="keywords" content="" />
 	<meta name="author" content="Tomas Green" />
 	<title>Week</title>
-	<link rel="stylesheet" href="style.css?v=0.1.1-r1" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="huer-0.1.1.min.css?v=0.1.1-r3" type="text/css" media="screen" charset="utf-8">
+	<link rel="stylesheet" href="style.css?v=0.1.1-r3" type="text/css" media="screen" charset="utf-8">
 </head>
 <body>
 	<main class="main">
@@ -23,6 +24,44 @@
 			<div class="info"></div>
 		</div>
 	</main>
-	<script src="script.js?v=0.1.1-r1"></script>
+	<template id="help">
+		<div class="help">
+			<h2>Help</h2>
+			<p>
+				http://.../?week=W<br>
+				http://.../?year=YYYY<br>
+				http://.../?week=W&year=YYYY<br>
+				http://.../?date=YYYY-MM-DD
+			</p>
+			<table>
+				<thead>
+					<tr>
+						<th>Key</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>h</td>
+						<td>help</td>
+					</tr>
+					<tr>
+						<td>f</td>
+						<td>fullscreen</td>
+					</tr>
+					<tr>
+						<td>r</td>
+						<td>reset</td>
+					</tr>
+					<tr>
+						<td>a</td>
+						<td>reset and autoupdate</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</template>
+	<script src="huer-0.1.1.min.js?v=0.1.1-r3"></script>
+	<script src="script.js?v=0.1.1-r3"></script>
 </body>
 </html>

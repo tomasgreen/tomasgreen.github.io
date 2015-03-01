@@ -1,5 +1,13 @@
+/**
+ * Author: Tomas Green
+ * License: MIT
+ */
+
+'use strict';
+
 var _animationEndEvents = 'webkitAnimationEnd mozAnimationEnd msAnimationEnd oAnimationEnd animationend',
-	_animationStartEvents = 'webkitAnimationStart mozAnimationStart msAnimationStart oAnimationStart animationstart';
+	_animationStartEvents = 'webkitAnimationStart mozAnimationStart msAnimationStart oAnimationStart animationstart',
+	_fullscreenMethods = 'requestFullscreen mozRequestFullScreen webkitRequestFullscreen msRequestFullscreen';
 
 function _each(o, func) {
 	if (!o || (o.length === 0 && o != window)) return;
@@ -8,6 +16,28 @@ function _each(o, func) {
 		func(el);
 	});
 }
+
+function _launchFullscreen(element) {
+	_fullscreenMethods.split(' ').forEach(function (f) {
+		if (element[f]) element[f]();
+	});
+}
+
+function _getTemplate(tmpl) {
+	var t = document.getElementById(tmpl);
+	if (!t) return null;
+	var clone = document.importNode(t.content, true);
+	return clone;
+}
+
+function _queryStringToObject(string) {
+	if (!string) return;
+	var objURL = {};
+	string.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), function ($0, $1, $2, $3) {
+		objURL[$1] = decodeURIComponent($3);
+	});
+	return objURL;
+};
 
 function _one(el, events, func, useCapture) {
 	_on(el, events, function (ev) {
@@ -22,6 +52,7 @@ function _on(els, events, func, useCapture) {
 		for (var e in ev) el.addEventListener(ev[e], func, useCapture);
 	});
 }
+
 
 function _off(els, events, func) {
 	_each(els, function (el) {
@@ -46,6 +77,16 @@ function _removeClass(els, cls) {
 			for (var i in arr) el.classList.remove(arr[i]);
 		} else el.className = el.className.replace(new RegExp('(^|\\b)' + cls.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 	});
+}
+
+function _toggleClass(el, cls) {
+	if (_hasClass(el, cls)) _removeClass(el, cls);
+	else _addClass(el, cls);
+}
+
+function _hasClass(el, cls) {
+	if (el.classList) return el.classList.contains(cls);
+	else return new RegExp('(^| )' + cls + '( |$)', 'gi').test(el.className);
 }
 
 function _animateCSS(el, cls, start, end) {
@@ -89,15 +130,66 @@ http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-
 (function () {
 	'use strict';
 	document.addEventListener('DOMContentLoaded', function () {
-		/*if (navigator.userAgent.match(/(iPad|iPhone|iPod)/g)) {
-			document.querySelector('.main').style.height = '87vh';
-		}*/
 
+		var huerInstance, interval;
 		var date = new Date(),
 			weekEl = document.querySelector('.week'),
 			dateEl = document.querySelector('.date'),
 			yearEl = document.querySelector('.year'),
 			infoEl = document.querySelector('.info');
+		var params = _queryStringToObject(window.location.search);
+		if (params) {
+			if (params.date) {
+				date = new Date(params.date);
+			} else {
+				if (params.year) date.setFullYear(params.year);
+				if (params.week) date.setWeek(params.week);
+			}
+		}
+
+		_on([document.documentElement], 'keyup', function (ev) {
+			if (ev.srcElement != document.body) return;
+			if (ev.keyCode == 70) _launchFullscreen(document.documentElement);
+			else if (ev.keyCode == 72) {
+				showHelp();
+			} else if (ev.keyCode == 82) {
+				resetAll(new Date());
+			} else if (ev.keyCode == 65) {
+				if (interval === null) resetAll(new Date());
+				autoupdate(interval === null);
+			}
+		});
+
+		function showHelp() {
+			if (huerInstance) {
+				huerInstance.destroy();
+			} else huerInstance = huer({
+				html: _getTemplate('help'),
+				destroyOnEsc: true,
+				destroyOnClick: true,
+				onDismiss: function () {
+					huerInstance = null;
+				}
+			});
+		}
+
+		function autoupdate(on) {
+			if (on === undefined) on = true;
+			if (interval) {
+				clearInterval(interval);
+				interval = null;
+				console.log('autoupdate off');
+			}
+			if (on) {
+				interval = setInterval(function () {
+					var dt = new Date();
+					if (date.format() != dt.format()) {
+						resetAll(dt);
+					}
+				}, 1000);
+				console.log('autoupdate on');
+			}
+		}
 
 		function setSpan() {
 			if (isNaN(date)) return;
@@ -112,40 +204,17 @@ http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-
 			}
 
 		}
-		yearEl.value = yearEl.lastValue = date.getFullYear();
-		weekEl.value = weekEl.lastValue = date.getWeek();
-		dateEl.value = dateEl.lastValue = date.format();
-		setSpan();
 
-		_animateCSS(weekEl, 'animate');
-		_animateCSS(yearEl, 'animate');
-		_animateCSS(dateEl, 'animate');
-
-		_on(dateEl, 'keyup', function (ev) {
-			if (dateEl.value.length < 10 || dateEl.lastValue == dateEl.value) return;
-			dateEl.lastValue = dateEl.value;
-			date = new Date(dateEl.value);
-			updateYear();
-			updateWeek();
+		function resetAll(dt) {
+			if (dt) date = dt;
+			yearEl.value = yearEl.lastValue = date.getFullYear();
+			weekEl.value = weekEl.lastValue = date.getWeek();
+			dateEl.value = dateEl.lastValue = date.format();
 			setSpan();
-		}, false);
-		_on(weekEl, 'keyup', function (ev) {
-			if (weekEl.value > 53 || weekEl.value < 1 || weekEl.lastValue == weekEl.value) return;
-			if (isNaN(date)) date = new Date();
-			weekEl.lastValue = weekEl.value;
-			date.setWeek(parseInt(weekEl.value, 10), yearEl.value);
-			updateDate();
-			setSpan();
-		}, false);
-
-		_on(yearEl, 'keyup', function (ev) {
-			if (yearEl.value.length < 4 || yearEl.lastValue == yearEl.value) return;
-			date.setFullYear(yearEl.value);
-			yearEl.lastValue = yearEl.value;
-			updateWeek();
-			updateDate();
-			setSpan();
-		}, false);
+			_animateCSS(weekEl, 'animate');
+			_animateCSS(yearEl, 'animate');
+			_animateCSS(dateEl, 'animate');
+		}
 
 		function updateDate() {
 			if (isNaN(date) || dateEl.lastValue == date.format()) return;
@@ -167,5 +236,37 @@ http://stackoverflow.com/questions/16590500/javascript-calculate-date-from-week-
 			yearEl.value = yearEl.lastValue = date.getFullYear();
 			_animateCSS(yearEl, 'animate');
 		}
+
+		resetAll();
+		autoupdate();
+
+		_on(dateEl, 'keyup', function (ev) {
+			if (dateEl.value.length < 10 || dateEl.lastValue == dateEl.value) return;
+			dateEl.lastValue = dateEl.value;
+			date = new Date(dateEl.value);
+			updateYear();
+			updateWeek();
+			setSpan();
+			autoupdate(false);
+		}, false);
+		_on(weekEl, 'keyup', function (ev) {
+			if (weekEl.value > 53 || weekEl.value < 1 || weekEl.lastValue == weekEl.value) return;
+			if (isNaN(date)) date = new Date();
+			weekEl.lastValue = weekEl.value;
+			date.setWeek(parseInt(weekEl.value, 10), yearEl.value);
+			updateDate();
+			setSpan();
+			autoupdate(false);
+		}, false);
+
+		_on(yearEl, 'keyup', function (ev) {
+			if (yearEl.value.length < 4 || yearEl.lastValue == yearEl.value) return;
+			date.setFullYear(yearEl.value);
+			yearEl.lastValue = yearEl.value;
+			updateWeek();
+			updateDate();
+			setSpan();
+			autoupdate(false);
+		}, false);
 	});
 }).call(this);
