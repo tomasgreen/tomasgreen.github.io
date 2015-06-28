@@ -98,9 +98,10 @@
     "longitude": 13.471298217773438
 }];
         window.curr = new google.maps.Marker({
-            position: new google.maps.LatLng(59.3658098751162,13.471298217773438)
+            position: new google.maps.LatLng(59.3658098751162,13.471298217773438),
+            icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+            title: 'MY Pos'
         });
-
         var mapOptions = {
             zoom: 18,
             center: new google.maps.LatLng(59.3658098751162,13.471298217773438),
@@ -115,7 +116,7 @@
             });
             marker.setMap(map);
         }
-
+        /*
         function success(pos) {
             window.curr.setPosition( new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude));
         }
@@ -129,7 +130,7 @@
             timeout: 5000,
             maximumAge: 0
         };
-        window.follower = navigator.geolocation.watchPosition(success, error, options);
+        window.follower = navigator.geolocation.watchPosition(success, error, options);*/
     </script>
 </body>
 </html>
