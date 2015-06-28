@@ -103,12 +103,8 @@
 
         var mapOptions = {
             zoom: 18,
+            center: new google.maps.LatLng(59.3658098751162,13.471298217773438),
             panControl: false,
-            zoomControl: true,
-            mapTypeControl: true,
-            scaleControl: true,
-            streetViewControl: true,
-            overviewMapControl: true
         };
         var map = new google.maps.Map(document.getElementById('demoMap'), mapOptions);
         for(var l in coords){
