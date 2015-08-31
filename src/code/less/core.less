@@ -1,0 +1,119 @@
+body {
+	margin: 0px;
+	padding: 0px;
+	font-family: 'Avenir Next','Helvetica Neue', sans-serif;
+	font-weight: 100;
+	font-size: 15px;
+	color: #333;
+	background-color: #333;
+}
+a {
+	text-decoration: none;
+	color: #fff;
+}
+header {
+	position: relative;
+	width: 100%;
+	height: 70vh;
+	background-image: url(eel7.jpg);
+	background-size: cover;
+	background-position: center;
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	h1 {
+		text-align: center;
+		font-weight: 100;
+		font-size: 200px;
+		font-style: italic;
+		opacity: 0.5;
+		box-sizing: border-box;
+		color: #fff;
+		line-height: 1;
+		padding: 10px;
+		margin: 0px;
+	}
+}
+section {
+	article {
+		float: left;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		padding: 20px;
+		min-height: 30vh;
+		background-color: #f8f8f8;
+		box-sizing: border-box;
+		width: 25%;
+	}
+	a {
+		display: block;
+		box-sizing: border-box;
+		text-align: center;
+		color: #333;
+		font-size: 30px;
+		line-height: 1;
+		font-weight: 300;
+		padding: 0px;
+		margin: 0px 0px 10px 0px;
+	}
+}
+.article-snurra{
+	background-color: #225378;
+	span,a {
+		color: #fff;
+	}
+}
+.article-week{
+	background-color: #1695A3;
+	span,a {
+		color: #fff;
+	}
+}
+.article-huer{
+	background-color: #F3FFE2;
+	span,a {
+		color: #333;
+	}
+}
+.article-countdown{
+	background-color: #EB7F00;
+	span,a {
+		color: #fff;
+	}
+}
+.screen-sm,.screen-xs {
+	display: none;
+}
+@media (max-width: 900px) {
+	.screen-sm {
+		clear:both;
+		display: block;
+	}
+	section article {
+		width: 50%;
+		min-height: 25vh;
+	}
+	header {
+		height: 50vh;
+	}
+}
+@media (max-height: 400px) {
+	header h1 {
+		font-size: 100px;
+	}
+}
+@media (max-width: 400px) {
+	section article {
+		width: 100%;
+	}
+	.screen-xs {
+		clear:both;
+		display: block;
+	}
+	header h1 {
+		font-size: 100px;
+	}
+}
